@@ -1,11 +1,9 @@
 package com.example.Project.service;
 
 import com.example.Project.entity.Expense;
-import com.example.Project.entity.ExpenseRepo;
-import jakarta.persistence.Id;
+import com.example.Project.repository.ExpenseRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +13,7 @@ import java.util.List;
 public class ExpenseService {
 
     @Autowired
-    private ExpenseRepo expenseRepo;
+    private ExpenseRepository expenseRepository;
 
     public Expense saveExpense(Expense expense) {
 
@@ -24,38 +22,38 @@ public class ExpenseService {
             throw new IllegalArgumentException("Amount should be greater than 0");
 
         }
-        return expenseRepo.save(expense);
+        return expenseRepository.save(expense);
     }
 
     public List<Expense> saveTheList(List<Expense> expense) {
-        return expenseRepo.saveAll(expense);
+        return expenseRepository.saveAll(expense);
     }
 
     public List<Expense> getAllProducts() {
-        return expenseRepo.findAll();
+        return expenseRepository.findAll();
     }
 
     public Expense findById(Long id) {
-        return expenseRepo.findById(id).orElse(null);
+        return expenseRepository.findById(id).orElse(null);
     }
 
     public Expense findByCat(String category) {
-        return expenseRepo.findByCategory(category);
+        return expenseRepository.findByCategory(category);
     }
 
     public Expense update(Expense expenses) {
-        Expense expense = expenseRepo.findById(expenses.getId()).orElse(null);
+        Expense expense = expenseRepository.findById(expenses.getId()).orElse(null);
 
         expense.setAmount(expenses.getAmount());
         expense.setCategory(expenses.getCategory());
         expense.setDescription(expenses.getDescription());
         expense.setDate(expenses.getDate());
 
-        return expenseRepo.save(expense);
+        return expenseRepository.save(expense);
     }
 
     public String deleteId(Long id) {
-        expenseRepo.deleteById(id);
+        expenseRepository.deleteById(id);
         return "deleted";
     }
 }
